@@ -4,10 +4,11 @@
   "description": "WeatherDump GUI",
   "main": "electron.js",
   "scripts": {
-    "release": "npm run webpack:prod && electron-builder -wml --publish=onTag",
-    "release:mac": "npm run webpack:prod && electron-builder --mac --publish=never",
-    "release:win": "npm run webpack:prod && electron-builder --win --publish=never",
-    "release:linux": "npm run webpack:prod && electron-builder --linux --publish=never",
+    "release": "npm run webpack:prod && electron-builder -wml --publish=always",
+    "build": "npm run webpack:prod && electron-builder -wml --publish=never",
+    "build:mac": "npm run webpack:prod && electron-builder --mac --publish=never",
+    "build:win": "npm run webpack:prod && electron-builder --win --publish=never",
+    "build:linux": "npm run webpack:prod && electron-builder --linux --publish=never",
     "webpack:dev": "webpack --config webpack.config.dev.js && node server.dev.js",
     "electron:dev": "NODE_ENV=development electron electron.js",
     "webpack:prod": "webpack --config webpack.config.prod.js"
