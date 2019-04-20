@@ -1,3 +1,4 @@
 node_modules/*
 dist/*
 resources/bundle.js
+package-lock.json

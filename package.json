@@ -5,6 +5,7 @@
   "main": "electron.js",
   "scripts": {
     "release": "npm run webpack:prod && electron-builder -wml --publish=always",
+    "release:pre": "npm run webpack:prod && electron-builder -wml --publish=always --config.publish.releaseType=prerelease",
     "build": "npm run webpack:prod && electron-builder -wml --publish=never",
     "build:mac": "npm run webpack:prod && electron-builder --mac --publish=never",
     "build:win": "npm run webpack:prod && electron-builder --win --publish=never",

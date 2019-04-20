@@ -2,6 +2,9 @@ productName: WeatherDump
 appId: com.osp.weatherdump
 artifactName: weatherdump-gui-${version}-${os}-${arch}.${ext}
 icon: "./resources/icon_by_eucalyp.png"
+publish:
+  provider: github
+  releaseType: release
 files:
 - electron.js
 win:
