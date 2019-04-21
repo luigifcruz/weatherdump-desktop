@@ -2,42 +2,42 @@
 @import 'grid';
 
 .dashboard > .grid-container {
-    @include grid-container-size(14em, 5em);
-    @include grid-container-gap(.5em, .5em);
+  @include grid-container-size(14em, 5em);
+  @include grid-container-gap(0.5em, 0.5em);
 }
 
 .main-body > .sat-option {
-    width: 16em;
-    height: 95px;
-    border-radius: .75em;
-    margin-right: 1em;
-    padding: .5em .5em 1em .75em;
-    position: relative;
-    background: $background-hightlight-color;
+  width: 16em;
+  height: 95px;
+  border-radius: 0.75em;
+  margin-right: 1em;
+  padding: 0.5em 0.5em 1em 0.75em;
+  position: relative;
+  background: $background-hightlight-color;
 }
 
 .main-body > .sat-option > label {
-    position: absolute;
-    font-size: .85em;
-    padding: .15em .45em .15em .45em;
-    background: $faint-background-text-color;
-    line-height: 1.4em; 
-    border-radius: .35em;
-    line-height: 1.5em; 
-    right: .75em;
-    top: .85em;
+  position: absolute;
+  font-size: 0.85em;
+  padding: 0.15em 0.45em 0.15em 0.45em;
+  background: $faint-background-text-color;
+  line-height: 1.4em;
+  border-radius: 0.35em;
+  line-height: 1.5em;
+  right: 0.75em;
+  top: 0.85em;
 }
 
 .main-body > .sat-option > h3 {
-    font-size: 1.5em;
-    margin: 0;
+  font-size: 1.5em;
+  margin: 0;
 }
 
 .main-body > .sat-option > h4 {
-    margin: 0 0 .5em 0;
-    color: $light-background-text-color;
+  margin: 0 0 0.5em 0;
+  color: $light-background-text-color;
 }
 
 .main-body > .sat-option > .btn {
-    @include btn-size(4.75em, 2.15em);
+  @include btn-size(4.75em, 2.15em);
 }

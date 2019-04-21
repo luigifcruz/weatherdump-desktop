@@ -1,13 +1,13 @@
-import "styles/progressbar";
+import 'styles/progressbar';
 
-import { GLSL, Node, Shaders } from "gl-react";
+import { GLSL, Node, Shaders } from 'gl-react';
 import React, { Component } from 'react';
 
-import { Surface } from "gl-react-dom";
+import { Surface } from 'gl-react-dom';
 
 const shaders = Shaders.create({
-    constellation: {
-        frag: GLSL`
+  constellation: {
+    frag: GLSL`
         precision highp float;
         uniform float complex[200];
 
@@ -48,30 +48,31 @@ const shaders = Shaders.create({
 
             gl_FragColor = vec4(color, 1.0);
         }
-    `}
+    `,
+  },
 });
 
 class Constellation extends Component {
-    render() {
-        const { percentage, stats, complex } = this.props;
-        return (
-            <div className="Constellation">
-                <Surface width={250} height={250}>
-                    <Node shader={shaders.constellation} uniforms={{ complex }} />
-                </Surface>
-                <div className="Label">PSK Constellation</div>
-                <div className="progress-bar progress-bar-orange-dark">
-                    <div className="bar">
-                        <div style={{ width: percentage + "%" }} className="filler"></div>
-                    </div>
-                    <div className="text">
-                        <div className="description">{stats.TaskName}</div>
-                        <div className="percentage">{percentage.toFixed(2)}%</div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+  render() {
+    const { percentage, stats, complex } = this.props;
+    return (
+      <div className="Constellation">
+        <Surface width={250} height={250}>
+          <Node shader={shaders.constellation} uniforms={{ complex }} />
+        </Surface>
+        <div className="Label">PSK Constellation</div>
+        <div className="progress-bar progress-bar-orange-dark">
+          <div className="bar">
+            <div style={{ width: percentage + '%' }} className="filler" />
+          </div>
+          <div className="text">
+            <div className="description">{stats.TaskName}</div>
+            <div className="percentage">{percentage.toFixed(2)}%</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
-export default Constellation
+export default Constellation;

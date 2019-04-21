@@ -1,12 +1,12 @@
 .tab-view-header {
-    user-select: none;
-    margin-top: .15em;
-    display: flex;
+  user-select: none;
+  margin-top: 0.15em;
+  display: flex;
 }
 
 .tab-view-body {
-    margin-top: .75em;
-    height: 18.5em;
+  margin-top: 0.75em;
+  height: 18.5em;
 }
 
 .tab-view-body > div {
@@ -14,41 +14,41 @@
 }
 
 .tab-view-tab {
-    height: 2em;
-    padding: .15em 1.5em .15em .75em;
-    border-radius: 2em;
-    display: flex;
-    cursor: pointer;
-    margin-right: .5em;
-    color: white;
-    text-decoration: none;
+  height: 2em;
+  padding: 0.15em 1.5em 0.15em 0.75em;
+  border-radius: 2em;
+  display: flex;
+  cursor: pointer;
+  margin-right: 0.5em;
+  color: white;
+  text-decoration: none;
 
-    &:hover {
-        background: $background-hightlight-color;
-    }
+  &:hover {
+    background: $background-hightlight-color;
+  }
 }
 
-.tab-view-tab > .feather { 
-    margin-top: .22em;
+.tab-view-tab > .feather {
+  margin-top: 0.22em;
 }
 
 .tab-view-tab > h3 {
-    margin-left: .75em;
-    margin-top: 0em;
-    font-size: 1em;
-    line-height: 1.85em;
+  margin-left: 0.75em;
+  margin-top: 0em;
+  font-size: 1em;
+  line-height: 1.85em;
 }
 
 .tab-view-tab > svg {
-    margin-top: .35em;
-    margin-left: .5em;
-    width: 20px;
+  margin-top: 0.35em;
+  margin-left: 0.5em;
+  width: 20px;
 }
 
 .tab-view-tab-selected {
-    background: $green-color; 
+  background: $green-color;
 
-    &:hover {
-        background: $green-color !important;
-    }
+  &:hover {
+    background: $green-color !important;
+  }
 }

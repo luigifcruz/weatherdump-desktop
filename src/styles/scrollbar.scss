@@ -1,14 +1,14 @@
 .scroll-bar {
-    overflow-y: scroll;
-    margin-right: -.7em;
+  overflow-y: scroll;
+  margin-right: -0.7em;
 }
 
 .scroll-bar::-webkit-scrollbar {
-    width: .7em;
-	background-color: transparent;
+  width: 0.7em;
+  background-color: transparent;
 }
 
 .scroll-bar::-webkit-scrollbar-thumb {
-    background-color: transparent;
-    border-right: .25em solid $faint-background-text-color;
+  background-color: transparent;
+  border-right: 0.25em solid $faint-background-text-color;
 }
