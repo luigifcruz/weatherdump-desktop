@@ -5,7 +5,7 @@ import { version } from '../../package.json';
 import path from 'path';
 import { remote } from 'electron';
 import request from 'superagent';
-import { spawn, exec } from 'child_process';
+import { spawn } from 'child_process';
 
 class WeatherServer {
   constructor(port) {
@@ -21,9 +21,10 @@ class WeatherServer {
 
   get getVersion() {
     return new Promise((resolve, reject) => {
-      const command = `${this.getBinaryPath()} --version`;
-      exec(command, (error, stdout, stderr) => {
-        resolve(stderr.toString());
+      let runner = spawn(this.getBinaryPath(), ['--version']);
+
+      runner.stderr.on('data', data => {
+        resolve(data.toString());
       });
     });
   }
