@@ -22,6 +22,10 @@ class WeatherClient {
 
   abortTask(uuid) {
     return new Promise((resolve, reject) => {
+      if (!uuid) {
+        reject('id is required');
+      }
+
       request
         .post(`http://${this.serverAddress}/abort/${uuid}`)
         .then(resolve)

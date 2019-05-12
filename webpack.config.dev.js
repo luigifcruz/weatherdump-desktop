@@ -52,7 +52,11 @@ const devConfig = {
         exclude: /node_modules/,
         options: {
           presets: ['@babel/preset-react', '@babel/preset-env'],
-          plugins: [['@babel/transform-runtime']],
+          plugins: [
+            '@babel/transform-runtime',
+            ['@babel/plugin-proposal-decorators', { legacy: true }],
+            ['@babel/plugin-proposal-class-properties', { loose: true }],
+          ],
         },
       },
       {

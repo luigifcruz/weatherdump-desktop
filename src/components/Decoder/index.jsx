@@ -1,46 +1,19 @@
 import 'styles/Decoder';
 
-import * as rxa from '../../redux/actions';
-
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 
 import Constellation from './Constellation';
+import ReactSVG from 'react-svg';
 import { RingLoader } from 'react-spinners';
 import Websocket from 'react-websocket';
-import { connect } from 'react-redux';
 import { decoder as headerText } from 'static/HeaderText';
 
-function _base64ToArrayBuffer(base64) {
-  var wordArray = window.atob(base64);
-  var len = wordArray.length,
-    u8_array = new Uint8Array(len),
-    offset = 0,
-    word,
-    i;
-  for (i = 0; i < len; i++) {
-    word = wordArray.charCodeAt(i);
-    u8_array[offset++] = word & 0xff;
-  }
-  return u8_array;
-}
-
+@inject('store')
+@observer
 class Decoder extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      socketOpen: false,
-      complex: [],
-      stats: {
-        TotalBytesRead: 0.0,
-        TotalBytes: 0.0,
-        AverageRSCorrections: [-1, -1, -1, -1],
-        AverageVitCorrections: 0,
-        SignalQuality: 0,
-        ReceivedPacketsPerChannel: [],
-        Finished: false,
-        TaskName: 'Starting decoder',
-      },
-    };
 
     this.handleAbort = this.handleAbort.bind(this);
     this.openDecodedFolder = this.openDecodedFolder.bind(this);
@@ -48,35 +21,25 @@ class Decoder extends Component {
     this.handleSocketEvent = this.handleSocketEvent.bind(this);
     this.handleSocketMessage = this.handleSocketMessage.bind(this);
     this.datalink = this.props.match.params.datalink;
+
+    this.store = this.props.store;
+    this.decoder = this.props.store.decoder;
   }
 
   handleSocketMessage(payload) {
-    const data = JSON.parse(payload);
-    if (this.state.stats.Finished != this.props.Finished && data.Finished) {
+    this.decoder.parsePayload(payload);
+    if (this.decoder.stats.Finished) {
       this.handleFinish();
     }
-    this.setState({
-      stats: data,
-      complex: _base64ToArrayBuffer(data.Constellation),
-    });
   }
 
   handleSocketEvent() {
-    this.setState({ socketOpen: !this.state.socketOpen });
+    this.decoder.socketOpen = !this.decoder.socketOpen;
   }
 
   componentDidMount() {
-    if (this.props.processId == null) {
-      global.client
-        .startDecoder({
-          datalink: this.datalink,
-          inputFile: this.props.demodulatedFile,
-          decoder: this.props.processDescriptor,
-        })
-        .then(res => {
-          this.props.dispatch(rxa.updateProcessId(res.uuid));
-          this.props.dispatch(rxa.updateDecodedFile(res.outputPath));
-        });
+    if (this.store.id == null) {
+      this.store.startDecoder(this.datalink);
     }
   }
 
@@ -86,22 +49,20 @@ class Decoder extends Component {
         body: 'WeatherDump finished decoding your file.',
       });
     }
-    this.props.dispatch(rxa.updateProcessId(null));
+    this.store.reset();
   }
 
   handleAbort() {
-    const { history, processId } = this.props;
-    history.push(`/steps/${this.datalink}/decoder`);
+    const uri = `/steps/${this.datalink}/decoder`;
+    this.props.history.push(uri);
 
-    if (processId != null) {
-      global.client.abortTask(processId).then(() => {
-        this.handleFinish();
-      });
-    }
+    this.store.abortDecoder().then(() => {
+      this.handleFinish();
+    });
   }
 
   openDecodedFolder() {
-    let filePath = this.props.decodedFile.split('/');
+    let filePath = this.store.decodedFile.split('/');
     filePath.pop();
     window.open(filePath.join('/'), '_blank');
   }
@@ -111,7 +72,7 @@ class Decoder extends Component {
   }
 
   render() {
-    const { stats } = this.state;
+    const { stats } = this.decoder;
 
     let percentage = (stats.TotalBytesRead / stats.TotalBytes) * 100;
     percentage = isNaN(percentage) ? 0 : percentage;
@@ -123,34 +84,22 @@ class Decoder extends Component {
       <div>
         <div className="main-header">
           <h1 className="main-title">
-            <div onClick={this.handleAbort} className="icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-arrow-left"
-              >
-                <line x1="19" y1="12" x2="5" y2="12" />
-                <polyline points="12 19 5 12 12 5" />
-              </svg>
-            </div>
+            <ReactSVG
+              onClick={this.handleAbort}
+              className="icon"
+              src="/icons/arrow-left.svg"
+            />
             {headerText.title}
           </h1>
           <h2 className="main-description">{headerText.description}</h2>
         </div>
-        {this.props.processId != null ? (
+        {this.store.id != null ? (
           <div>
             <Websocket
               reconnect={true}
               debug={process.env.NODE_ENV == 'development'}
               url={`ws://${global.client.enginePath}/socket/${this.datalink}/${
-                this.props.processId
+                this.store.id
               }`}
               onMessage={this.handleSocketMessage}
               onOpen={this.handleSocketEvent}
@@ -158,13 +107,13 @@ class Decoder extends Component {
             />
           </div>
         ) : null}
-        {this.state.socketOpen || this.state.stats.Finished || false ? (
+        {this.decoder.socketOpen || this.decoder.stats.Finished || false ? (
           <div className="main-body Decoder">
             <div className="LeftWindow">
               <Constellation
                 percentage={percentage}
-                stats={this.state.stats}
-                complex={this.state.complex}
+                stats={this.decoder.stats}
+                complex={this.decoder.complex}
               />
             </div>
             <div className="CenterWindow">
@@ -237,8 +186,7 @@ class Decoder extends Component {
                 })}
               </div>
               <div className="controll-box">
-                {this.props.processId != null &&
-                this.props.decodedFile != null ? (
+                {this.store.id != null && this.store.decodedFile != null ? (
                   <div
                     onClick={this.handleAbort}
                     className="btn btn-orange btn-large"
@@ -274,5 +222,4 @@ class Decoder extends Component {
   }
 }
 
-Decoder.propTypes = rxa.props;
-export default connect(rxa.mapStateToProps)(Decoder);
+export default Decoder;

@@ -2,6 +2,7 @@ import 'styles/progressbar';
 
 import { GLSL, Node, Shaders } from 'gl-react';
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 
 import { Surface } from 'gl-react-dom';
 
@@ -52,6 +53,8 @@ const shaders = Shaders.create({
   },
 });
 
+@inject('store')
+@observer
 class Constellation extends Component {
   render() {
     const { percentage, stats, complex } = this.props;

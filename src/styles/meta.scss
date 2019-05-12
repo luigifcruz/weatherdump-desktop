@@ -8,11 +8,11 @@
 
 .about-left > figure > img {
   height: 15em;
-  margin-top: 0.75em;
+  margin-top: .75em;
 }
 
 .about-left > figure > figcaption {
-  font-size: 0.85em;
+  font-size: .85em;
 }
 
 @mixin about-left-theme($text-color) {
@@ -41,13 +41,13 @@
 }
 
 .about-right-subtitle {
-  font-size: 0.85em;
+  font-size: .85em;
   margin-bottom: 1.5em;
   font-style: italic;
 }
 
 .about-right-body {
-  font-size: 0.85em;
+  font-size: .85em;
   margin-bottom: 2em;
   font-family: 'Roboto Mono', monospace;
 }

@@ -1,8 +1,6 @@
 import 'styles/fonts';
 import 'styles/app';
 
-import * as rxa from 'redux/actions';
-
 import { Link, Route, Switch } from 'react-router-dom';
 import React, { Component } from 'react';
 
@@ -12,11 +10,11 @@ import Meta from 'components/Meta';
 import Processor from 'components/Processor';
 import Showroom from 'components/Showroom';
 import StepPicker from 'components/StepPicker';
-import { connect } from 'react-redux';
 import { remote } from 'electron';
 import { version } from '../../package.json';
 import { withRouter } from 'react-router-dom';
 
+@withRouter
 class App extends Component {
   constructor(props) {
     super(props);
@@ -80,5 +78,4 @@ class App extends Component {
   }
 }
 
-App.propTypes = rxa.props;
-export default withRouter(connect(rxa.mapStateToProps)(App));
+export default App;

@@ -2,7 +2,7 @@
 
 .Decoder {
   display: flex;
-  margin-top: 0.25em;
+  margin-top: .25em;
 
   .LeftWindow {
     width: 30%;
@@ -13,13 +13,13 @@
       height: 275px;
       padding: 10px;
       background: $background-hightlight-color;
-      border-radius: 0.5em;
+      border-radius: .5em;
 
       .Label {
         width: 100%;
         text-align: center;
         margin-top: 5px;
-        font-size: 0.85em;
+        font-size: .85em;
         color: $light-background-text-color;
         font-weight: 700;
       }
@@ -43,9 +43,9 @@
     .LockIndicator {
       width: 100%;
       height: 2.35em;
-      margin-top: 0.575em;
+      margin-top: .575em;
       color: white;
-      border-radius: 0.5em;
+      border-radius: .5em;
       text-align: center;
       line-height: 2.31em;
       font-weight: 700;
@@ -55,17 +55,17 @@
     .DroppedPackets {
       width: 9.25em;
       height: 4.05em;
-      border-radius: 0.5em;
+      border-radius: .5em;
       background: $background-hightlight-color;
-      padding: 0.5em;
-      margin: 0.75em 0 0 0.75em;
+      padding: .5em;
+      margin: .75em 0 0 .75em;
 
       .Number {
         width: 100%;
         text-align: center;
         font-size: 1.75em;
         font-family: 'Roboto Mono', monospace;
-        margin-top: 0.05em;
+        margin-top: .05em;
         color: white;
       }
 
@@ -73,25 +73,25 @@
         width: 100%;
         text-align: center;
         color: $light-background-text-color;
-        font-size: 0.8em;
+        font-size: .8em;
         font-weight: 700;
-        margin-top: 0.4em;
+        margin-top: .4em;
       }
     }
 
     .SignalQuality {
       width: 5.5em;
       height: 4.05em;
-      border-radius: 0.5em;
+      border-radius: .5em;
       background: $background-hightlight-color;
-      padding: 0.5em;
-      margin-top: 0.75em;
+      padding: .5em;
+      margin-top: .75em;
 
       .Number {
         width: 100%;
         text-align: center;
         font-size: 1.75em;
-        margin-top: 0.05em;
+        margin-top: .05em;
         font-family: 'Roboto Mono', monospace;
         color: white;
       }
@@ -100,27 +100,27 @@
         width: 100%;
         text-align: center;
         color: $light-background-text-color;
-        font-size: 0.8em;
+        font-size: .8em;
         font-weight: 700;
-        margin-top: 0.4em;
+        margin-top: .4em;
       }
     }
 
     .ReedSolomon {
       width: 17em;
       height: 5.75em;
-      border-radius: 0.5em;
+      border-radius: .5em;
       background: $background-hightlight-color;
-      padding: 0.5em 0 0.5em 0.5em;
+      padding: .5em 0 .5em .5em;
 
       .Name {
         width: 100%;
-        margin-left: -0.15em;
+        margin-left: -.15em;
         text-align: center;
         color: $light-background-text-color;
-        font-size: 0.85em;
+        font-size: .85em;
         font-weight: 700;
-        margin-top: 0.5em;
+        margin-top: .5em;
       }
 
       .Indicator {
@@ -129,9 +129,9 @@
         .Block {
           width: 4em;
           height: 3.75em;
-          padding: 0.25em 0.5em 0.25em 0.5em;
-          margin-right: 0.5em;
-          border-radius: 0.5em;
+          padding: .25em .5em .25em .5em;
+          margin-right: .5em;
+          border-radius: .5em;
           background: $background-color;
 
           .Corrections {
@@ -143,8 +143,8 @@
           }
 
           .Label {
-            font-size: 0.8em;
-            margin-top: 0.25em;
+            font-size: .8em;
+            margin-top: .25em;
             color: $faint-background-text-color;
             font-weight: 700;
             text-align: center;
@@ -157,7 +157,7 @@
 
   .RightWindow {
     width: 35%;
-    margin-left: 0.9em;
+    margin-left: .9em;
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
@@ -165,9 +165,9 @@
     .ChannelList {
       width: 100%;
       height: 17.85em;
-      border-radius: 0.5em;
+      border-radius: .5em;
       background: $background-hightlight-color;
-      padding: 0 0 0.5em 0.5em;
+      padding: 0 0 .5em .5em;
       display: flex;
       flex-wrap: wrap;
       overflow: hidden;
@@ -176,8 +176,8 @@
       .Label {
         width: 100%;
         text-align: center;
-        margin-top: 0.75em;
-        font-size: 0.8em;
+        margin-top: .75em;
+        font-size: .8em;
         color: $light-background-text-color;
         font-weight: 700;
       }
@@ -185,10 +185,10 @@
       .Channel {
         width: 6.6em;
         height: 1.21em;
-        border-radius: 0.5em;
+        border-radius: .5em;
         background: $background-color;
-        padding: 0.5em;
-        margin: 0.5em 0.25em 0 0.25em;
+        padding: .5em;
+        margin: .5em .25em 0 .25em;
         font-family: 'Roboto Mono', monospace;
         display: flex;
 
@@ -210,7 +210,7 @@
     }
 
     .controll-box {
-      margin-top: 0.71em;
+      margin-top: .71em;
       display: flex;
 
       .btn-small {
@@ -223,7 +223,7 @@
       }
 
       .btn-left {
-        margin-right: 0.8em;
+        margin-right: .8em;
       }
     }
   }

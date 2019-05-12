@@ -2,15 +2,16 @@ import 'styles/steppicker';
 import 'styles/tabview';
 import 'styles/grid';
 
-import * as rxa from 'redux/actions';
-
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import ReactSVG from 'react-svg';
 import { steps as headerText } from 'static/HeaderText';
 import inputFormats from 'static/InputFormats';
 
+@inject('store')
+@observer
 class StepPicker extends Component {
   constructor(props) {
     super(props);
@@ -19,23 +20,19 @@ class StepPicker extends Component {
     this.getUploadedFileName = this.getUploadedFileName.bind(this);
     this.selectInput = this.selectInput.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.store = this.props.store;
   }
 
   getUploadedFileName(e) {
     const inputFile = e.target.files[0].path;
-    if (inputFile == undefined) {
-      console.log('Is this running inside a Electron application?');
-      alert("Browser navigation isn't supported by this app.");
-      return;
-    }
-
     const { tab, datalink } = this.props.match.params;
+
     switch (tab) {
       case 'decoder':
-        this.props.dispatch(rxa.updateDemodulatedFile(inputFile));
+        this.store.demodulatedFile = inputFile;
         break;
       case 'processor':
-        this.props.dispatch(rxa.updateDecodedFile(inputFile));
+        this.store.decodedFile = inputFile;
         break;
     }
 
@@ -44,7 +41,7 @@ class StepPicker extends Component {
   }
 
   selectInput(descriptor) {
-    this.props.dispatch(rxa.updateProcessDescriptor(descriptor));
+    this.store.descriptor = descriptor;
     this.fileUpload.current.click();
   }
 
@@ -62,23 +59,11 @@ class StepPicker extends Component {
       <div>
         <div className="main-header">
           <h1 className="main-title">
-            <div onClick={this.goBack} className="icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-arrow-left"
-              >
-                <line x1="19" y1="12" x2="5" y2="12" />
-                <polyline points="12 19 5 12 12 5" />
-              </svg>
-            </div>
+            <ReactSVG
+              onClick={this.goBack}
+              className="icon"
+              src="/icons/arrow-left.svg"
+            />
             {headerText.title}
           </h1>
           <h2 className="main-description">{headerText.description}</h2>
@@ -93,21 +78,7 @@ class StepPicker extends Component {
                   : 'tab-view-tab'
               }
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-radio"
-              >
-                <circle cx="12" cy="12" r="2" />
-                <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14" />
-              </svg>
+              <ReactSVG src="/icons/radio.svg" />
               <h3>Recorder</h3>
             </Link>
             <Link
@@ -118,20 +89,7 @@ class StepPicker extends Component {
                   : 'tab-view-tab'
               }
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-activity"
-              >
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-              </svg>
+              <ReactSVG src="/icons/activity.svg" />
               <h3>Demodulator</h3>
             </Link>
             <Link
@@ -142,29 +100,7 @@ class StepPicker extends Component {
                   : 'tab-view-tab'
               }
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-cpu"
-              >
-                <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
-                <rect x="9" y="9" width="6" height="6" />
-                <line x1="9" y1="1" x2="9" y2="4" />
-                <line x1="15" y1="1" x2="15" y2="4" />
-                <line x1="9" y1="20" x2="9" y2="23" />
-                <line x1="15" y1="20" x2="15" y2="23" />
-                <line x1="20" y1="9" x2="23" y2="9" />
-                <line x1="20" y1="14" x2="23" y2="14" />
-                <line x1="1" y1="9" x2="4" y2="9" />
-                <line x1="1" y1="14" x2="4" y2="14" />
-              </svg>
+              <ReactSVG src="/icons/cpu.svg" />
               <h3>Decoder</h3>
             </Link>
             <Link
@@ -175,26 +111,7 @@ class StepPicker extends Component {
                   : 'tab-view-tab'
               }
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-aperture"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <line x1="14.31" y1="8" x2="20.05" y2="17.94" />
-                <line x1="9.69" y1="8" x2="21.17" y2="8" />
-                <line x1="7.38" y1="12" x2="13.12" y2="2.06" />
-                <line x1="9.69" y1="16" x2="3.95" y2="6.06" />
-                <line x1="14.31" y1="16" x2="2.83" y2="16" />
-                <line x1="16.62" y1="12" x2="10.88" y2="21.94" />
-              </svg>
+              <ReactSVG src="/icons/aperture.svg" />
               <h3>Processor</h3>
             </Link>
           </div>
@@ -228,5 +145,4 @@ class StepPicker extends Component {
   }
 }
 
-StepPicker.propTypes = rxa.props;
-export default connect(rxa.mapStateToProps)(StepPicker);
+export default StepPicker;

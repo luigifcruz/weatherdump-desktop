@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
+import { WeatherClient, WeatherServer } from 'api';
 
 import App from 'components/App';
 import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { configureStore } from 'redux/store';
-import { WeatherServer, WeatherClient } from 'api';
+import { Provider } from 'mobx-react';
+import Store from 'stores/Store';
 import getPort from 'get-port';
 
-const store = configureStore();
+let store = (window.store = new Store());
 
 window.addEventListener('load', event => {
   if (process.env.NODE_ENV === 'development') {

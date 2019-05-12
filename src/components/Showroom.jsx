@@ -4,15 +4,16 @@ import 'styles/btn';
 import 'styles/grid';
 import 'styles/scrollbar';
 
-import * as rxa from 'redux/actions';
-
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 
+import ReactSVG from 'react-svg';
 import Websocket from 'react-websocket';
-import { connect } from 'react-redux';
 import { showroom as headerText } from 'static/HeaderText';
 import open from 'open';
 
+@inject('store')
+@observer
 class Showroom extends Component {
   constructor(props) {
     super(props);
@@ -27,11 +28,14 @@ class Showroom extends Component {
     this.handleSocketMessage = this.handleSocketMessage.bind(this);
     this.handleSocketEvent = this.handleSocketEvent.bind(this);
     this.handleAbort = this.handleAbort.bind(this);
+
+    this.store = this.props.store;
+    this.processor = this.props.store.processor;
   }
 
   decodedFilePath(path) {
     let ext = '.jpeg';
-    if (!this.props.processorEnhancements.ExportJPEG.Activated) {
+    if (!this.processor.enhancements.ExportJPEG.Activated) {
       ext = '.png';
     }
     return path + ext;
@@ -45,15 +49,14 @@ class Showroom extends Component {
 
   openDecodedFolder() {
     (async () => {
-      await open(this.props.demodulatedFile, { wait: true });
+      await open(this.store.demodulatedFile, { wait: true });
     })();
   }
 
   handleAbort() {
-    this.handleFinish();
-    this.props.history.push('/index.html');
-
-    // To-do: ADD DECODER ABORT WHEN AVAILABLE
+    this.store.abortProcessor().then(() => {
+      this.props.history.push('/index.html');
+    });
   }
 
   handleFinish() {
@@ -62,13 +65,11 @@ class Showroom extends Component {
         body: 'WeatherDump finished processing your file.',
       });
     }
-
-    this.props.dispatch(rxa.updateProcessId(null));
+    this.store.reset();
   }
 
   handleSocketMessage(payload) {
-    const manifest = JSON.parse(payload);
-    this.props.dispatch(rxa.updateManifest(manifest.Parser, manifest.Composer));
+    this.processor.updateManifest(JSON.parse(payload));
   }
 
   handleSocketEvent() {
@@ -77,11 +78,11 @@ class Showroom extends Component {
 
   render() {
     const { datalink } = this.props.match.params;
-    const { manifestComposer, manifestParser } = this.props;
-    const manifestMerged = Object.assign(manifestComposer, manifestParser);
+    const { manifestMerged } = this.processor;
 
     let count = 0,
       finished = 0;
+
     Object.entries(manifestMerged).map((p, i) => {
       if (p[1].Finished) {
         finished++;
@@ -93,13 +94,13 @@ class Showroom extends Component {
 
     return (
       <div>
-        {this.props.processId != null ? (
+        {this.store.id != null ? (
           <div>
             <Websocket
               reconnect={true}
               debug={true}
               url={`ws://${global.client.enginePath}/socket/${datalink}/${
-                this.props.processId
+                this.store.id
               }`}
               onMessage={this.handleSocketMessage}
               onOpen={this.handleSocketEvent}
@@ -109,23 +110,11 @@ class Showroom extends Component {
         ) : null}
         <div className="main-header">
           <h1 className="main-title">
-            <div onClick={this.handleAbort} className="icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-x"
-              >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </div>
+            <ReactSVG
+              onClick={this.handleAbort}
+              className="icon"
+              src="/icons/x.svg"
+            />
             {headerText.title}
           </h1>
           <h2 className="main-description">{headerText.description}</h2>
@@ -182,5 +171,4 @@ class Showroom extends Component {
   }
 }
 
-Showroom.propTypes = rxa.props;
-export default connect(rxa.mapStateToProps)(Showroom);
+export default Showroom;
