@@ -17,6 +17,9 @@ function createWindow() {
     autoHideMenuBar: true,
     resizable: false,
     backgroundColor: '#212330',
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
 
   if (
